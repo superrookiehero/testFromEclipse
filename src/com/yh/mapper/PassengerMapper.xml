@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.mapper.PassengerMapper">
+	<insert id="insertPassenger" useGeneratedKeys="true" keyProperty="id" parameterType="passenger">
+		insert into t_passenger values(null,#{name},#{sex},#{phoneNum},#{credentialsType},#{credentialsNum},#{travellerType})
+	</insert>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yh.mapper.UserMapper">
+<select id="findAllUser" resultType="user">
+    select * from t_user
+</select>
+
+<insert id="addUser" parameterType="user">
+    insert into t_user values (null,#{email},#{username},#{password},#{phoneNum},#{status})
+</insert>
+
+
+<resultMap type="role" id="MyRole">
+    <id column="id" property="id"/>
+    <result column="roleName" property="roleName"/>
+    <result column="roleDesc" property="roleDesc"/>
+</resultMap>
+
+<select id="findTheRole" parameterType="int" resultMap="MyRole" >
+    select a.id,a.roleName,a.roleDesc from t_role a,t_user_role b where a.id=b.roleId and b.userId=#{id}
+</select>
+
+<select id="findToLogin" parameterType="user" resultType="user">
+    select * from t_user where username=#{username} and password=#{password}
+</select>
+
+<insert id="addTheRole" parameterType="role">
+    insert into t_role (null,#{roleName},#{roleDesc}) where t_user_role.roleid=t_role.id and id=#{id}
+</insert>
+
+
+</mapper>

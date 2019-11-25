@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.mapper.OrderMapper">
+
+	<insert id="addOrder" useGeneratedKeys="true" keyProperty="id" parameterType="order">
+        insert into t_order values
+		(null,#{orderNum},null,#{peopleCount},
+		#{orderDesc},#{payType},#{orderStatus},#{productId},#{memberId});
+	</insert>
+	
+	<select id="findOrder" resultType="order">
+	     select * from t_order 
+	</select>
+	
+	<select id="findOrderDetail" parameterType="int" resultMap="OrderDetail">
+	   <!-- select a.orderNum,a.peopleCount,a.orderDesc,a.orderTime,a.id oid,
+	   c.cityName,c.departureTime,c.productName,c.id productId,
+	   d.name pname,d.sex,d.phoneNum,d.credentialsType,c.credentialsNum,
+	   f.name memberName,f.nickname,f.phoneNum,f.email,f.id memberId,
+	   from t_order a,t_member f,t_product c,t_passenger d,t_order_passenger e 	   
+	   where a.productId=c.id 
+	   and a.memberId=f.id 
+	   and e.orderId=a.id 
+	   and e.passengerId=d.id and id=#{id} -->
+	   select a.id oid,a.orderNum
+		,a.orderTime,a.peopleCount,a.orderDesc,a.payType,a.orderStatus,
+		b.id
+		memberId,b.`name` membername,b.nickName,b.phoneNum,b.email,
+		c.id
+		productId ,c.DepartureTime,c.cityName ,c.productName,c.productDesc,
+		e.`name` pname,e.sex ,e.phoneNum
+		pphoneNum,e.credentialsType,e.credentialsNum
+
+		FROM t_order a,t_member
+		b,t_product c ,t_order_passenger d,t_passenger
+		e
+
+		where a.memberId=b.id
+		and a.productId=c.id
+		and a.id=d.orderId
+		and e.id=d.passengerId
+		and
+		a.id=#{id}
+	</select>
+	
+	<resultMap type="OrderQueryVo" id="OrderDetail">
+	   <association property="order" javaType="order">
+	      <id column="oid" property="id"/>	
+	      <result column="memberId" property="memberId"/>
+	      <result column="orderDesc" property="orderDesc"/>
+	      <result column="orderNum" property="orderNum"/>
+	      <result column="orderStatus" property="orderStatus"/>
+	      <result column="orderTime" property="orderTime"/>
+	      <result column="payType" property="payType"/>
+	      <result column="peopleCount" property="peopleCount"/>
+	      <result column="productId" property="productId"/>
+	   </association>
+	   <association property="product" javaType="product">
+	       <id column="productId" property="id"/>
+	       <result column="cityName" property="cityName"/>
+	       <result column="departureTime" property="departureTime"/>
+	       <result column="productName" property="productName"/>
+	       <result column="productDesc" property="productDesc"/>
+	   </association>	   
+	   <association property="member" javaType="member">
+	       <id column="memberId" property="id"/>
+	       <result column="memberName" property="name"/>
+	       <result column="nickName" property="nickName"/>
+	       <result column="phoneNum" property="phoneNum"/>
+	       <result column="email" property="email"/>
+	   </association>
+	   <collection property="passengers" ofType="passenger">
+	       <result column="pname" property="name"/>
+	       <result column="sex" property="sex"/>
+	       <result column="pphoneNum" property="phoneNum"/>
+	       <result column="credentialsType" property="credentialsType"/>
+	       <result column="credentialsNum" property="credentialsNum"/>
+	   </collection>
+	</resultMap>
+	
+	
+	<!-- <insert id="addALL" parameterType="OrderAndPassengerVo" >
+	     insert into t_order values
+		(null,#{orderNum},null,#{peopleCount},
+		#{orderDesc},#{payType},#{orderStatus},#{productId},#{memberId});
+	</insert> -->
+	
+	<insert id="insertOrderAndPassenger" parameterType="map">
+		insert into t_order_passenger values(null,#{orderId},#{passengerId})
+	</insert>
+
+</mapper>

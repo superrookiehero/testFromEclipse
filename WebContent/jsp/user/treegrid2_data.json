@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "name": "admin",
+    "date": "",
+    "children": [
+      {
+        "id": 2,
+        "name": "管理员",
+        "date": "负责所有管理",
+        "children":[
+        	{
+        		"id": 1,
+			    "name": "VIP",
+			    "date": "负责订单，产品，系统的管理"
+        	}
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "tom",
+    "date": "",
+    "children": [
+      {
+        "id": 4,
+        "name": "普通用户",
+        "date": "负责某些管理"
+      }
+    ]
+  }
+]
